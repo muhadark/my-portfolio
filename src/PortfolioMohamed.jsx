@@ -45,30 +45,69 @@ const navLinks = [
   { label: "Contact", href: "#contact" },
 ];
 
+/** -------------------------------------------------------
+ * Icon mapper: maps stack strings -> /public/logo icons
+ * Falls back to a text badge when an icon isn't available.
+ * Extend the map with any icons you add to /public/logo
+ * ------------------------------------------------------ */
+function stackIconPath(name) {
+  const key = (name || "").toLowerCase();
+
+  const map = {
+    // Web basics
+    html: "/my-portfolio/logo/html.svg",
+    html5: "/logo/html.svg",
+    css: "/logo/css.svg",
+    css3: "/logo/css.svg",
+    javascript: "/logo/javascript.svg",
+    js: "/logo/javascript.svg",
+    react: "/logo/react.svg",
+    next: "/logo/nextjs.svg",
+    nextjs: "/logo/nextjs.svg",
+    tailwind: "/logo/tailwind.svg",
+    "tailwind css": "/logo/tailwind.svg",
+
+    // Your stacks
+    firebase: "/logo/firebase.svg",
+    "power bi": "/logo/powerbi.svg",             // add file if missing
+    "business central": "/logo/dynamics365.svg", // add file if missing
+    glpi: "/logo/glpi.svg",                       // add file if missing
+    eleader: "/logo/eleader.svg",                 // add file if missing
+  };
+
+  return map[key] || null;
+}
+
 const projects = [
   {
     title: "Sensibilisation Platform",
+    role: "Web Developer",
     description:
       "Inclusive awareness platform hosted on Firebase with modular content blocks and accessibility-first UI.",
     url: "https://sensibilisation-927ab.web.app/",
     stack: ["HTML", "CSS", "JavaScript", "Firebase"],
     impact: "Reached 1k+ unique visitors in the first launch month.",
+    image: "/proj/projectOne.png", // put an image here or keep placeholder
   },
   {
     title: "Silk & Sugar eCommerce",
+    role: "Web Developer",
     description:
       "Responsive storefront for a Moroccan cosmetics brand with curated collections and streamlined checkout flows.",
     url: "https://www.silkandsugar.ma/",
     stack: ["HTML", "CSS", "JavaScript"],
     impact: "Improved mobile conversions by delivering a refined UX across breakpoints.",
+    image: "/proj/projectTwo.png",
   },
   {
     title: "Operations Support Toolkit",
+    role: "Functional Consultant",
     description:
       "Internal dashboard concept aligning Business Central entities with Eleader field operations for faster resolutions.",
     url: "https://GLPI",
     stack: ["Business Central", "Power BI", "GLPI"],
     impact: "Accelerated ticket diagnosis and team visibility at Kenz Maroc.",
+    image: "/proj/projectThree.png",
   },
 ];
 
@@ -187,6 +226,7 @@ export default function PortfolioMohamed() {
   const lineScale = useSpring(scrollYProgress, { stiffness: 60, damping: 18, mass: 1.6 });
   const dotTopRaw = useTransform(scrollYProgress, (v) => `${v * 100}%`);
   const dotTop = useSpring(dotTopRaw, { stiffness: 60, damping: 18, mass: 1.6 });
+
   return (
     <div className="relative min-h-screen bg-[#03040D] text-white">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -228,7 +268,7 @@ export default function PortfolioMohamed() {
       <main className="relative z-10">
         <LandingHero />
 
-        {/* ===== Skills (DEVELOP / CREATE) — screenshot style ===== */}
+        {/* ===== Skills (DEVELOP / CREATE) ===== */}
         <section id="skills" className="mx-auto max-w-6xl px-4 py-20">
           <div className="mb-12">
             <h2 className="mt-3 text-3xl font-semibold md:text-4xl">WHAT I DO</h2>
@@ -329,54 +369,126 @@ export default function PortfolioMohamed() {
           `}</style>
         </section>
 
-        <section id="projects" className="mx-auto max-w-6xl px-4 py-20">
+        {/* ===================== PROJECTS (numbered grid cards) ===================== */}
+        <section id="projects" className="mx-auto max-w-[1400px] px-4 py-20">
           <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="text-xs uppercase tracking-[0.3em] text-white/40">Selected work</p>
               <h2 className="mt-3 text-3xl font-semibold md:text-4xl">My Projects</h2>
             </div>
-            <a href="https://github.com/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-xs uppercase tracking-[0.2em] text-white/70 transition hover:text-white">
+            <a
+              href="https://github.com/"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-xs uppercase tracking-[0.2em] text-white/70 transition hover:text-white"
+            >
               View code <ExternalLink className="h-3.5 w-3.5" />
             </a>
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-3">
-            {projects.map((project) => (
-              <Motion.div key={project.title} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.5 }} transition={{ duration: 0.5 }}>
-                <Card className="flex h-full flex-col p-7">
-                  <div className="flex items-center justify-between gap-4">
-                    <h3 className="text-2xl font-semibold">{project.title}</h3>
-                    <a href={project.url} target="_blank" rel="noreferrer" className="rounded-full border border-white/10 bg-white/10 p-2 text-white/70 transition hover:text-white">
-                      <Globe className="h-4 w-4" />
-                    </a>
+          <div className="grid grid-cols-1 md:grid-cols-3 w-full mx-auto mt-10 gap-0">
+            {projects.map((project, i) => {
+              const n = String(i + 1).padStart(2, "0");
+              const role = project.role || "Web Developer";
+              const image = project.image || "/proj/placeholder.png";
+
+              const alignRight = i % 2 === 0; // 0,2,4... right-aligned like your reference
+              const numberPos = ["top-4 left-4", "bottom-4 left-4", "top-4 right-4", "bottom-4 right-4"][i % 4];
+
+              return (
+                <div
+                  key={project.title}
+                  className="relative flex flex-col justify-between py-6 px-6 md:px-15 border border-white/20 bg-transparent overflow-hidden h-full"
+                >
+                  <div className={`absolute md:text-6xl text-3xl p-6 font-bold text-white/10 ${numberPos}`}>
+                    {n}
                   </div>
-                  <p className="mt-3 text-sm text-white/70">{project.description}</p>
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {project.stack.map((item) => (
-                      <span key={item} className="rounded-full bg-white/10 px-3 py-1 text-xs uppercase tracking-widest text-white/60">
-                        {item}
-                      </span>
-                    ))}
+
+                  <div className="flex flex-col justify-between h-full">
+                    <div
+                      className={`flex flex-col ${alignRight ? "text-right items-end order-1" : "text-left items-start order-2"} z-10 p-6`}
+                    >
+                      <div>
+                        <h3 className="md:text-xl text-md font-semibold text-white">{project.title}</h3>
+                        <p className="md:text-sm text-xs text-gray-400">{role}</p>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex space-x-2">
+                          {project.stack?.slice(0, 5).map((tech) => {
+                            const icon = stackIconPath(tech);
+                            if (icon) {
+                              return (
+                                <img
+                                  key={tech}
+                                  alt={`${tech} icon`}
+                                  loading="lazy"
+                                  width="24"
+                                  height="24"
+                                  decoding="async"
+                                  className="inline-block"
+                                  src={icon}
+                                />
+                              );
+                            }
+                            return (
+                              <span
+                                key={tech}
+                                className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-widest text-white/60"
+                              >
+                                {tech}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      className={`relative w-full flex-grow rounded-xl overflow-hidden z-10 ${alignRight ? "order-2" : "order-1"
+                        } transition-transform duration-300 hover:scale-[1.01]`}
+                      style={{ opacity: 0.7 }}
+                    >
+                      {project.url ? (
+                        <a href={project.url} target="_blank" rel="noreferrer">
+                          <img
+                            alt={`${project.title} image`}
+                            loading="lazy"
+                            width="500"
+                            height="500"
+                            decoding="async"
+                            src={image}
+                            className="w-full h-full object-cover"
+                            style={{ color: "transparent" }}
+                          />
+                        </a>
+                      ) : (
+                        <img
+                          alt={`${project.title} image`}
+                          loading="lazy"
+                          width="500"
+                          height="500"
+                          decoding="async"
+                          src={image}
+                          className="w-full h-full object-cover"
+                          style={{ color: "transparent" }}
+                        />
+                      )}
+                    </div>
                   </div>
-                  <div className="mt-6 rounded-2xl bg-white/5 px-4 py-3 text-xs uppercase tracking-[0.2em] text-white/50">
-                    {project.impact}
-                  </div>
-                </Card>
-              </Motion.div>
-            ))}
+                </div>
+              );
+            })}
           </div>
         </section>
 
-        {/* ===================== NEW: EXPERIENCE SECTION (timeline + video) ===================== */}
+        {/* ===================== EXPERIENCE SECTION (timeline) ===================== */}
         <section id="experience" className="mx-auto max-w-6xl px-4 py-20" ref={experienceRef}>
           <div className="mb-10">
             <p className="text-xs uppercase tracking-[0.3em] text-white/40">Trajectory</p>
             <h2 className="mt-3 text-3xl font-semibold md:text-4xl">Experience</h2>
           </div>
 
-          {/* Video preview (put your mp4 in /public as /experience-video.mp4) */}
-
-          {/* The timeline HTML you shared, converted to JSX */}
           <div className="relative w-full max-w-5xl mx-auto py-16 px-4 sm:px-6 lg:px-8 mt-10">
             <Motion.div
               className="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-400 via-cyan-600 to-cyan-800 -translate-x-1/2 origin-top"
@@ -442,7 +554,6 @@ export default function PortfolioMohamed() {
                 </div>
               </div>
 
-
               {/* ITEM 4 */}
               <div className="relative grid grid-cols-1 md:grid-cols-2 items-start gap-x-20 bg-black rounded-2xl p-6 shadow-lg md:bg-transparent">
                 <div className="flex flex-col md:items-end md:text-right md:order-1">
@@ -453,21 +564,51 @@ export default function PortfolioMohamed() {
                     <img alt="Notion logo" src={KENZMAROC} className="absolute inset-0 h-full w-full object-contain" />
                   </div>
                 </div>
-                <div className="text-gray-300 md:text-lg text:md text-left md:order-2">
-                  <p>
-                    "Owned GLPI complaint tracking across Navision/Business Central, eLeader, hardware, and software; produced service-level syntheses in Power BI.",
-                    "Performed preventive inventory declarations and ensured audit-ready documentation.",
-                    "Administered D365 Business Central: analytical dimensions, customer setup (discounts, price groups, payment & delivery terms), item master data, and tariffs/price discounts.",
-                    "Configured stock warehouses (raw materials, finished goods, packaging) and maintained manufacturing/accounting settings.",
-                    "Monitored Eleader (PDA) order flows and ERP integrations to keep data and deliveries accurate.",
-                    "Launched a cyber-awareness platform (phishing, fake supplier fraud, etc.) with explainer videos, quizzes, and educational blog posts.",
-                    "Automated Fleet (Parc Automobile) spare-parts management in ERP and delivered a custom purchase-order form.",
-                    "Rolled out Production module data: article codification (MP, PF, EMBALLAGE), routings (gammes), BOMs (nomenclatures), and raw-material variants in ERP and Eleader."                  </p>
+                <div className="text-gray-300 md:text-lg text:md text-left md:order-2 space-y-5">
+                  <p><strong>• GLPI Complaint Tracking & Support Systems:</strong></p>
+                  <ul className="ml-5 space-y-1">
+                    <li>★ Managed GLPI complaint tracking across ERP (Navision/Business Central), eLeader, hardware, and software systems.</li>
+                    <li>★ Provided tailored technical solutions and preventive inventory declarations.</li>
+                    <li>★ Created Power BI reports summarizing service-level performance by department.</li>
+                  </ul>
+
+                  <p><strong>• ERP Data Management (Dynamics 365 Business Central):</strong></p>
+                  <ul className="ml-5 space-y-1">
+                    <li>★ Administered analytical dimensions for items, customers, and projects.</li>
+                    <li>★ Configured customers with discounts, price groups, payment, and delivery terms.</li>
+                    <li>★ Created item master data with manufacturing and accounting setups.</li>
+                    <li>★ Defined warehouse structures (Raw Materials, Finished Goods, Packaging).</li>
+                    <li>★ Maintained tariffs and price discount updates for all stock items.</li>
+                  </ul>
+
+                  <p><strong>• Integration eLeader ↔ ERP (Navision / Business Central):</strong></p>
+                  <ul className="ml-5 space-y-1">
+                    <li>★ Tracked and validated orders from the PDA “eLeader” automatically synchronized with the ERP.</li>
+                    <li>★ Ensured data integrity and order flow between field sales and ERP modules.</li>
+                  </ul>
+
+                  <p><strong>• Plateforme de Cyber-Sensibilisation:</strong></p>
+                  <ul className="ml-5 space-y-1">
+                    <li>★ Developed an awareness platform against phishing and supplier fraud.</li>
+                    <li>★ Created explainer videos, interactive quizzes, and educational blog content.</li>
+                    <li>★ Enhanced employee security awareness through gamified learning.</li>
+                  </ul>
+
+                  <p><strong>• Intégration PDR – Parc Automobile:</strong></p>
+                  <ul className="ml-5 space-y-1">
+                    <li>★ Automated spare-parts and fleet management within ERP (Business Central).</li>
+                    <li>★ Implemented custom purchase-order forms specific to automotive operations.</li>
+                    <li>★ Improved tracking of vehicle-related consumables and maintenance items.</li>
+                  </ul>
+
+                  <p><strong>• Intégration Module Production – Kenz Maroc:</strong></p>
+                  <ul className="ml-5 space-y-1">
+                    <li>★ Implemented item codification for raw materials (MP), finished goods (PF), and packaging (EMBALLAGE) in ERP and eLeader.</li>
+                    <li>★ Created routings (Gammes), Bills of Materials (Nomenclatures), and raw material variants.</li>
+                    <li>★ Ensured data alignment between ERP and production management systems.</li>
+                  </ul>
                 </div>
               </div>
-
-        {/* ===================== Hna fin khassni nzid les experience ===================== */}
-
 
             </div>
           </div>
@@ -518,7 +659,8 @@ export default function PortfolioMohamed() {
             </div>
           </div>
         </section>
-                <section id="home" className="mx-auto max-w-6xl px-4 pb-20 pt-16 md:pb-28">
+
+        <section id="home" className="mx-auto max-w-6xl px-4 pb-20 pt-16 md:pb-28">
           <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
             <Motion.div variants={stagger} initial="initial" whileInView="animate" viewport={{ once: true, amount: 0.6 }} className="space-y-7">
               <Motion.span variants={fadeUp} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/70">
