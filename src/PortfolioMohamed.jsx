@@ -52,27 +52,24 @@ const navLinks = [
  * ------------------------------------------------------ */
 function stackIconPath(name) {
   const key = (name || "").toLowerCase();
+  const base = import.meta.env.BASE_URL;
 
-  const map = {
-    // Web basics
-    html: "/my-portfolio/logo/html.svg",
-    html5: "/logo/html.svg",
-    css: "/logo/css.svg",
-    css3: "/logo/css.svg",
-    javascript: "/logo/javascript.svg",
-    js: "/logo/javascript.svg",
-    react: "/logo/react.svg",
-    next: "/logo/nextjs.svg",
-    nextjs: "/logo/nextjs.svg",
-    tailwind: "/logo/tailwind.svg",
-    "tailwind css": "/logo/tailwind.svg",
+ const map = {
+    css: `${base}logo/css.svg`,
+    openai: `${base}logo/openai.svg`,
+    javascript: `${base}logo/javascript.svg`,
+    react: `${base}logo/react.svg`,
+    next: `${base}logo/nextjs.svg`,
+    nextjs: `${base}logo/nextjs.svg`,
+    tailwind: `${base}logo/tailwind.svg`,
+    "tailwind css": `${base}logo/tailwind.svg`,
 
     // Your stacks
-    firebase: "/logo/firebase.svg",
-    "power bi": "/logo/powerbi.svg",             // add file if missing
-    "business central": "/logo/dynamics365.svg", // add file if missing
-    glpi: "/logo/glpi.svg",                       // add file if missing
-    eleader: "/logo/eleader.svg",                 // add file if missing
+    firebase: `${base}logo/firebase.svg`,
+    "power bi": `${base}logo/powerbi.svg`,             // add file if missing
+    "business central": `${base}logo/BusinessCentral.svg`, // add file if missing
+    glpi: `${base}logo/glpi.png`,                       // add file if missing
+    eleader: `${base}logo/eleader.svg`,                 // add file if missing
   };
 
   return map[key] || null;
@@ -85,9 +82,9 @@ const projects = [
     description:
       "Inclusive awareness platform hosted on Firebase with modular content blocks and accessibility-first UI.",
     url: "https://sensibilisation-927ab.web.app/",
-    stack: ["HTML", "CSS", "JavaScript", "Firebase"],
+    stack: ["openai", "CSS", "react", "Firebase"],
     impact: "Reached 1k+ unique visitors in the first launch month.",
-    image: "/proj/projectOne.png", // put an image here or keep placeholder
+    image: "logo/sensibilisation.jpg", // put an image here or keep placeholder
   },
   {
     title: "Silk & Sugar eCommerce",
@@ -95,9 +92,9 @@ const projects = [
     description:
       "Responsive storefront for a Moroccan cosmetics brand with curated collections and streamlined checkout flows.",
     url: "https://www.silkandsugar.ma/",
-    stack: ["HTML", "CSS", "JavaScript"],
+    stack: ["openai", "CSS", "react",, "Firebase"],
     impact: "Improved mobile conversions by delivering a refined UX across breakpoints.",
-    image: "/proj/projectTwo.png",
+    image: "logo/silkandsugar.jpg",
   },
   {
     title: "Operations Support Toolkit",
@@ -107,7 +104,7 @@ const projects = [
     url: "https://GLPI",
     stack: ["Business Central", "Power BI", "GLPI"],
     impact: "Accelerated ticket diagnosis and team visibility at Kenz Maroc.",
-    image: "/proj/projectThree.png",
+    image: "logo/dynamicsnav.jpg",
   },
 ];
 
@@ -174,7 +171,7 @@ const skillGroups = [
   {
     name: "Core Stack",
     icon: <Code2 className="w-5 h-5" />,
-    items: ["ERP Business Central 365", "React", "JavaScript", "HTML5", "CSS3", "Tailwind CSS"],
+    items: ["ERP Business Central 365", "React", "JavaScript", "CSS3", "Tailwind CSS"],
   },
   {
     name: "Tooling",
@@ -281,7 +278,7 @@ export default function PortfolioMohamed() {
                 <h3 className="text-white font-bold md:text-2xl text-lg tracking-wide">DEVELOP</h3>
                 <p className="text-gray-400 md:text-md text-sm mt-3 leading-relaxed">
                   Started creating mobile applications using Flutter, FlutterFlow, and Firebase and eventually
-                  switched to Web Development using NextJS, React, and Tailwind
+                  switched to Web Development using React, and Tailwind
                 </p>
 
                 <h4 className="text-cyan-300 font-semibold mt-5 mb-3 text-base">Skillset &amp; tools</h4>
@@ -332,8 +329,7 @@ export default function PortfolioMohamed() {
 
                 <p className="text-gray-400 md:text-md text-sm mt-3 leading-relaxed">
                   As a Consultant Fonctionnel ERP (Dynamics 365 Business Central) with complaint tracking on the GLPI
-                  system, I streamline data integrity, pricing, and warehouse setups while ensuring smooth field-ops
-                  integrations (Eleader → ERP) and rapid issue resolution.
+                  system, I streamline data integrity, pricing, and warehouse setups.
                 </p>
 
                 <h4 className="text-cyan-300 font-semibold mt-5 mb-3 text-base">Skillset &amp; Tools</h4>
@@ -447,7 +443,7 @@ export default function PortfolioMohamed() {
                     <div
                       className={`relative w-full flex-grow rounded-xl overflow-hidden z-10 ${alignRight ? "order-2" : "order-1"
                         } transition-transform duration-300 hover:scale-[1.01]`}
-                      style={{ opacity: 0.7 }}
+                      style={{ opacity: 0.9 }}
                     >
                       {project.url ? (
                         <a href={project.url} target="_blank" rel="noreferrer">
