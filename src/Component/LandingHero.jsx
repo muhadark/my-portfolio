@@ -55,7 +55,7 @@ export default function LandingHero() {
           height * 0.8,
           Math.max(width, height)
         );
-        g.addColorStop(0, "rgba(124,108,255,0.06)");
+        g.addColorStop(0, "rgba(175, 164, 255, 0.06)");
         g.addColorStop(1, "rgba(0,0,0,0)");
         ctx.fillStyle = g;
         ctx.fillRect(0, 0, width, height);
@@ -66,25 +66,16 @@ export default function LandingHero() {
           ctx.beginPath();
           for (let c = 0; c <= cols; c++) {
             const x = (c / cols) * width;
-            const amp = 18 + r * 1.2;
-            const k = (c * 0.9 + r * 0.6) * 0.35;
-            const yy = y + Math.sin(k + t * 2.2) * amp;
+            const amp = 29 + r * 1.2;
+            const k = (c * 0.9 + r * 7.6) * 0.15;
+            const yy = y + Math.sin(k + t * 5.2) * amp;
             if (c === 0) ctx.moveTo(x, yy);
             else ctx.lineTo(x, yy);
           }
-          ctx.strokeStyle = "rgba(255,255,255,0.15)";
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.42)";
           ctx.stroke();
         }
 
-        for (let c = 0; c <= cols; c += 3) {
-          const x = (c / cols) * width;
-          ctx.beginPath();
-          ctx.moveTo(x, 0);
-          const a = 60 + 30 * Math.sin(t + c * 0.3);
-          ctx.bezierCurveTo(x + 20, a, x - 20, height - a, x, height);
-          ctx.strokeStyle = "rgba(255,255,255,0.08)";
-          ctx.stroke();
-        }
         raf = requestAnimationFrame(draw);
       };
 
