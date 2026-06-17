@@ -6,9 +6,10 @@ import {
   useSpring,
 } from "framer-motion";
 import LandingHero from "./Component/LandingHero.jsx";
+import Navbar from "./Component/Navbar.jsx";
+import SocialSidebar from "./Component/SocialSidebar.jsx";
 import muhaLogo from "/logo/muha-logo.png";
 import SGAGROUPE from "/logo/PSAGROUPE.png";
-import Carrefour from "/logo/Carrefourlogo.png";
 import KENZMAROC from "/logo/KENZMAROC.jpeg";
 
 import {
@@ -27,8 +28,6 @@ import {
   Code2,
   Cog,
   Rocket,
-  Menu,
-  X,
 } from "lucide-react";
 
 const fadeUp = {
@@ -175,9 +174,9 @@ const education = [
 
 const languages = [
   { name: "Arabic", level: "Native" },
+  { name: "German", level: "B1" },
   { name: "English", level: "Fluent" },
   { name: "French", level: "B2 (TCF Canada)" },
-  { name: "German", level: "B1 (telc, in progress)" },
 ];
 
 const contactChannels = [
@@ -219,8 +218,29 @@ const Card = ({ children, className = "" }) => (
   </div>
 );
 
+const AnimatedSectionTitle = ({ text }) => {
+  const letters = text.split("");
+  return (
+    <div className="flex w-full items-center justify-center p-4 md:mt-25 mt-10 mb-10 font-extrabold">
+      <h2 className="blur-text md:text-7xl text-3xl font-extrabold flex flex-wrap justify-center text-center">
+        {letters.map((ch, i) => (
+          <Motion.span
+            key={i}
+            initial={{ filter: "blur(10px)", opacity: 0, y: -50 }}
+            whileInView={{ filter: "blur(0px)", opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: i * 0.05 }}
+            className="inline-block will-change-[transform,filter,opacity]"
+          >
+            {ch === " " ? "\u00A0" : ch}
+          </Motion.span>
+        ))}
+      </h2>
+    </div>
+  );
+};
+
 export default function PortfolioMohamed() {
-  const [navOpen, setNavOpen] = React.useState(false);
 
   const experienceRef = React.useRef(null);
   const { scrollYProgress } = useScroll({
@@ -248,74 +268,11 @@ export default function PortfolioMohamed() {
         <div className="absolute bottom-0 left-1/2 h-[18rem] w-[18rem] -translate-x-1/2 rounded-full bg-[#ffb347]/20 blur-[160px] md:h-[22rem] md:w-[22rem]" />
       </div>
 
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-black/70 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-5 py-4 sm:py-5">
-          <a href="#home" className="flex items-center gap-2">
-            <img
-              alt="Muha Logo"
-              src={muhaLogo}
-              className="h-9 w-9 sm:h-10 sm:w-10 md:h-12 md:w-12 lg:h-14 lg:w-14 transition-all duration-300 hover:scale-110 hover:rotate-10 hover:brightness-125"
-              width={150}
-              height={150}
-            />
-            
-          </a>
+      {/* Lauv-style Navbar */}
+      <Navbar />
 
-          {/* Desktop nav */}
-          <nav className="hidden items-center gap-6 text-xs sm:text-sm md:flex">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="transition hover:text-[#8a7bff]"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-
-          {/* Mobile CTA + menu */}
-          <div className="flex items-center gap-3 md:gap-4">
-            <a
-              href="mailto:simoamour18@gmail.com"
-              className="hidden xs:inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-2 text-[10px] sm:text-xs font-medium uppercase tracking-widest transition hover:border-white/40 hover:bg-white/20"
-            >
-              Let&apos;s talk <ArrowRight className="h-3 w-3" />
-            </a>
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 p-2 md:hidden"
-              aria-label="Toggle navigation menu"
-              onClick={() => setNavOpen((v) => !v)}
-            >
-              {navOpen ? (
-                <X className="h-4 w-4" />
-              ) : (
-                <Menu className="h-4 w-4" />
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile nav drawer */}
-        {navOpen && (
-          <div className="border-t border-white/10 bg-black/95 md:hidden">
-            <nav className="mx-auto flex max-w-6xl flex-wrap gap-2 px-4 pb-4 pt-2 text-xs">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setNavOpen(false)}
-                  className="rounded-full bg-white/5 px-3 py-2 text-white/80 hover:bg-white/10"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-          </div>
-        )}
-      </header>
+      {/* Floating social icons */}
+      <SocialSidebar />
 
       <main className="relative z-10">
         {/* Hero */}
@@ -323,11 +280,7 @@ export default function PortfolioMohamed() {
 
         {/* ===== Skills (DEVELOP / CREATE / CONSULT) ===== */}
         <section id="skills" className="mx-auto max-w-6xl px-4 sm:px-5 py-16 sm:py-20">
-          <div className="mb-8 sm:mb-12">
-            <h2 className="mt-3 text-2xl sm:text-3xl md:text-4xl font-semibold">
-              WHAT I DO
-            </h2>
-          </div>
+          <AnimatedSectionTitle text="What I do" />
 
           <div className="grid gap-10 md:gap-14 md:grid-cols-2">
             {/* DEVELOP */}
@@ -465,15 +418,8 @@ export default function PortfolioMohamed() {
           id="projects"
           className="mx-auto max-w-[1400px] px-4 sm:px-5 py-16 sm:py-20"
         >
-          <div className="mb-8 sm:mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-white/40">
-                Selected work
-              </p>
-              <h2 className="mt-3 text-2xl sm:text-3xl md:text-4xl font-semibold">
-                My Projects
-              </h2>
-            </div>
+          <AnimatedSectionTitle text="My Projects" />
+          <div className="mb-8 sm:mb-12 flex justify-center">
             <a
               href="https://github.com/"
               target="_blank"
@@ -602,14 +548,7 @@ export default function PortfolioMohamed() {
           className="mx-auto max-w-6xl px-4 sm:px-5 py-16 sm:py-20"
           ref={experienceRef}
         >
-          <div className="mb-8 sm:mb-10">
-            <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-white/40">
-              Trajectory
-            </p>
-            <h2 className="mt-3 text-2xl sm:text-3xl md:text-4xl font-semibold">
-              Experience
-            </h2>
-          </div>
+          <AnimatedSectionTitle text="My Experience" />
 
           <div className="relative w-full max-w-5xl mx-auto py-10 sm:py-16 px-2 sm:px-4 md:px-6 lg:px-8 mt-4 sm:mt-10">
             {/* timeline line & dot only visible from md+ to avoid weirdness on tiny screens */}
@@ -650,36 +589,6 @@ export default function PortfolioMohamed() {
                     Completed office tasks using Word, Excel, and Access; analyzed
                     sales with pivot tables and developed adaptability in a
                     rapidly changing work environment.
-                  </p>
-                </div>
-              </div>
-
-              {/* ITEM 2 */}
-              <div className="relative grid grid-cols-1 md:grid-cols-2 items-start gap-x-10 md:gap-x-20 gap-y-4 rounded-2xl bg-black/60 md:bg-transparent p-5 sm:p-6 md:p-0 shadow-lg md:shadow-none">
-                <div className="flex flex-col md:order-2 md:items-start md:text-left">
-                  <h3 className="text-xl md:text-2xl font-bold text-gray-100">
-                    Merchandiser
-                  </h3>
-                  <p className="text-base md:text-lg text-cyan-400 mb-1">
-                    Carrefour
-                  </p>
-                  <span className="text-sm md:text-base font-normal text-gray-400 mb-2 tracking-[0.25em]">
-                    2021
-                  </span>
-                  <div className="relative my-3 md:my-0 flex h-10 w-10 items-center justify-center">
-                    <img
-                      alt="Carrefour logo"
-                      src={Carrefour}
-                      className="absolute inset-0 h-full w-full object-contain"
-                    />
-                  </div>
-                </div>
-                <div className="text-sm sm:text-base md:text-lg text-gray-300 text-left md:text-right md:order-1">
-                  <p>
-                    Prepared product markups and maintained planogram compliance,
-                    managed cheese &amp; charcuterie departments, supported cashier
-                    duties during peak hours, and contributed to strong
-                    Ramadan-period sales.
                   </p>
                 </div>
               </div>
@@ -833,283 +742,85 @@ export default function PortfolioMohamed() {
           </div>
         </section>
 
-        {/* ===== EDUCATION + LANGUAGES ===== */}
-        <section
-          id="education"
-          className="mx-auto max-w-6xl px-4 sm:px-5 py-16 sm:py-20"
-        >
-          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-            <div>
-              <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-white/40">
-                Path &amp; learning
-              </p>
-              <h2 className="mt-3 text-2xl sm:text-3xl md:text-4xl font-semibold">
-                Education &amp; continuous growth
-              </h2>
-              <div className="mt-8 sm:mt-10 space-y-5 sm:space-y-6">
-                {education.map((item) => (
-                  <Card key={item.title} className="p-5 sm:p-7">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <h3 className="text-lg sm:text-xl font-semibold">
-                        {item.title}
-                      </h3>
-                      <span className="rounded-full border border-white/15 px-3 py-1 text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/50">
-                        {item.year}
-                      </span>
-                    </div>
-                    <p className="mt-3 text-xs sm:text-sm text-white/60">
-                      {item.org} · {item.location}
-                    </p>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            <div id="languages">
-              <Card className="h-full p-5 sm:p-7">
-                <div className="flex items-center gap-3">
-                  <div className="rounded-full border border-white/10 bg-white/10 p-2">
-                    <LanguagesIcon className="h-5 w-5 text-[#00bcd4]" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-white/40">
-                      Languages
-                    </p>
-                    <h3 className="text-xl sm:text-2xl font-semibold">
-                      Multilingual collaborator
-                    </h3>
-                  </div>
-                </div>
-                <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-4">
-                  {languages.map((language) => (
-                    <div
-                      key={language.name}
-                      className="flex items-center justify-between rounded-2xl bg-white/5 px-4 py-3 text-xs sm:text-sm text-white/70"
-                    >
-                      <span>{language.name}</span>
-                      <span className="text-white/40">{language.level}</span>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== HOME / INTRO (anchor) ===== */}
-        <section
-          id="home"
-          className="mx-auto max-w-6xl px-4 sm:px-5 pb-16 pt-12 sm:pb-20 md:pb-28"
-        >
-          <div className="grid gap-10 lg:gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-            <Motion.div
-              variants={stagger}
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, amount: 0.6 }}
-              className="space-y-6 sm:space-y-7"
-            >
-              <Motion.span
-                variants={fadeUp}
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-[10px] sm:text-xs uppercase tracking-[0.3em] text-white/70"
-              >
-                <Sparkles className="h-4 w-4 text-[#ffb347]" />
-                SUPPORT • DEVELOPMENT • ERP
-              </Motion.span>
-
-              <Motion.h1
-                variants={fadeUp}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight"
-              >
-                I help teams ship reliable systems and thoughtful web
-                experiences.
-              </Motion.h1>
-
-              <Motion.p
-                variants={fadeUp}
-                className="max-w-xl text-sm sm:text-base md:text-lg text-white/70"
-              >
-                Technicien support applicatif &amp; systèmes based in Rabat,
-                Morocco. I blend ERP Business Central expertise with front-end
-                craft to unblock operations and deliver user-friendly tools.
-              </Motion.p>
-
-              <Motion.div
-                variants={fadeUp}
-                className="flex flex-wrap items-center gap-3 sm:gap-4"
-              >
-                <a
-                  href="#projects"
-                  className="inline-flex items-center gap-3 rounded-full bg-[#8a7bff] px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-white shadow-[0_12px_40px_rgba(138,123,255,0.45)] transition hover:-translate-y-[2px]"
-                >
-                  View projects <ArrowRight className="h-4 w-4" />
-                </a>
-                <a
-                  href="#experience"
-                  className="inline-flex items-center gap-3 rounded-full border border-white/20 px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-white/80 transition hover:text-white"
-                >
-                  My experience
-                </a>
-              </Motion.div>
-
-              <Motion.div
-                variants={fadeUp}
-                className="grid gap-3 sm:gap-4 grid-cols-3"
-              >
-                {stats.map((stat) => (
-                  <Card key={stat.label} className="p-4 sm:p-5 text-center">
-                    <div className="text-lg sm:text-2xl font-semibold text-white">
-                      {stat.value}
-                    </div>
-                    <div className="mt-1 text-[10px] sm:text-xs uppercase tracking-widest text-white/60">
-                      {stat.label}
-                    </div>
-                  </Card>
-                ))}
-              </Motion.div>
-
-              <Motion.div
-                variants={fadeUp}
-                className="flex flex-wrap items-center gap-4 sm:gap-5 text-xs sm:text-sm text-white/70"
-              >
-                <span className="inline-flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-[#7c6cff]" /> Rabat, Morocco
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <GraduationCap className="h-4 w-4 text-[#ffb347]" /> Preparing
-                  Ausbildung in Germany
-                </span>
-              </Motion.div>
-            </Motion.div>
-
-            <Motion.div
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.6 }}
-              className="space-y-6"
-            >
-              <Card className="p-5 sm:p-7">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/50">
-                      Current focus
-                    </p>
-                    <h2 className="mt-2 text-lg sm:text-2xl font-semibold">
-                      Designing calm support experiences
-                    </h2>
-                  </div>
-                  <div className="rounded-full border border-white/10 bg-white/5 p-2 sm:p-3">
-                    <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-[#8a7bff]" />
-                  </div>
-                </div>
-                <p className="mt-4 text-xs sm:text-sm text-white/70">
-                  Building playbooks that connect support tooling, Business
-                  Central modules and front-line teams so issues are solved
-                  before they escalate.
-                </p>
-                <div className="mt-5 sm:mt-6 grid gap-3 text-xs sm:text-sm text-white/70">
-                  <div className="flex items-center justify-between rounded-2xl bg-white/5 px-4 py-3">
-                    <span>ERP ↔ Eleader sync automation</span>
-                    <span className="text-white/40">In progress</span>
-                  </div>
-                  <div className="flex items-center justify-between rounded-2xl bg-white/5 px-4 py-3">
-                    <span>Front-end micro projects</span>
-                    <span className="text-white/40">Weekend lab</span>
-                  </div>
-                  <div className="flex items-center justify-between rounded-2xl bg-white/5 px-4 py-3">
-                    <span>German B1 preparation</span>
-                    <span className="text-white/40">Daily</span>
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="p-5 sm:p-7">
-                <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/50">
-                  Connect
-                </p>
-                <div className="mt-4 flex flex-wrap gap-3">
-                  <a
-                    href="mailto:simoamour18@gmail.com"
-                    className="inline-flex w-full items-center justify-between rounded-2xl bg-white/5 px-4 py-3 text-xs sm:text-sm text-white/80 transition hover:bg-white/10"
-                  >
-                    Email <Mail className="h-4 w-4" />
-                  </a>
-                  <a
-                    href="https://github.com/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex w-full items-center justify-between rounded-2xl bg-white/5 px-4 py-3 text-xs sm:text-sm text-white/80 transition hover:bg-white/10"
-                  >
-                    GitHub <Github className="h-4 w-4" />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex w-full items-center justify-between rounded-2xl bg-white/5 px-4 py-3 text-xs sm:text-sm text-white/80 transition hover:bg-white/10"
-                  >
-                    LinkedIn <Linkedin className="h-4 w-4" />
-                  </a>
-                </div>
-              </Card>
-            </Motion.div>
-          </div>
-        </section>
-
-        {/* ===== CONTACT ===== */}
-        <section
-          id="contact"
-          className="mx-auto max-w-5xl px-4 sm:px-5 pb-20 pt-8 sm:pb-24"
-        >
-          <Card className="relative overflow-hidden p-7 sm:p-10 text-center md:text-left">
-            <div className="absolute -top-20 right-0 h-32 w-32 sm:h-40 sm:w-40 rounded-full bg-[#8a7bff]/40 blur-[120px]" />
-            <div className="absolute -bottom-20 left-8 h-36 w-36 sm:h-48 sm:w-48 rounded-full bg-[#00bcd4]/30 blur-[150px]" />
-            <div className="relative z-10 grid gap-8 sm:gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center">
-              <div>
-                <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-white/50">
-                  Let&apos;s collaborate
-                </p>
-                <h2 className="mt-3 text-2xl sm:text-3xl md:text-4xl font-semibold">
-                  Need someone who understands both users and systems?
-                </h2>
-                <p className="mt-4 max-w-xl text-xs sm:text-sm text-white/70">
-                  I&apos;m available for Ausbildung opportunities, junior
-                  developer roles or support missions where I can blend ERP
-                  operations knowledge with modern web craftsmanship.
-                </p>
-              </div>
-              <div className="space-y-3 sm:space-y-4">
-                {contactChannels.map((channel) => {
-                  const Icon = channel.icon;
-                  return (
-                    <a
-                      key={channel.label}
-                      href={channel.href}
-                      target={
-                        channel.href.startsWith("http") ? "_blank" : undefined
-                      }
-                      rel={
-                        channel.href.startsWith("http") ? "noreferrer" : undefined
-                      }
-                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 sm:px-5 py-3 sm:py-4 text-left transition hover:border-white/30 hover:bg-white/10 text-xs sm:text-sm"
-                    >
-                      <div>
-                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/50">
-                          {channel.label}
+        {/* ===== EDUCATION & LANGUAGES ===== */}
+        <section className="mx-auto max-w-6xl px-4 sm:px-5 py-16 sm:py-20">
+          <AnimatedSectionTitle text="Education" />
+          <div className="grid gap-10 md:grid-cols-5 md:gap-14">
+            {/* EDUCATION */}
+            <div id="education" className="md:col-span-3">
+              <div className="relative h-full">
+                <div className="corner-panel h-full rounded-lg p-5 sm:p-7 bg-transparent flex flex-col justify-center">
+                  <div className="flex flex-col">
+                    {education.map((item, index) => (
+                      <div
+                        key={item.title}
+                        className={`py-6 sm:py-8 ${
+                          index !== education.length - 1 ? "border-b border-white/10" : ""
+                        }`}
+                      >
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <h3 className="text-lg sm:text-xl font-semibold">
+                            {item.title}
+                          </h3>
+                          <span className="rounded-full border border-white/15 px-3 py-1 text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/50">
+                            {item.year}
+                          </span>
+                        </div>
+                        <p className="mt-3 text-xs sm:text-sm text-white/60">
+                          {item.org} · {item.location}
                         </p>
-                        <p className="mt-1 text-white/80">{channel.value}</p>
                       </div>
-                      <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-white/60" />
-                    </a>
-                  );
-                })}
+                    ))}
+                  </div>
+                </div>
+                <span className="corner tl" />
+                <span className="corner tr" />
+                <span className="corner bl" />
+                <span className="corner br" />
               </div>
             </div>
-          </Card>
+
+            <div id="languages" className="md:col-span-2">
+              <div className="relative h-full">
+                <div className="corner-panel h-full rounded-lg p-5 sm:p-7 bg-transparent">
+                  <div className="flex items-center gap-3">
+                    <div className="rounded-full border border-white/10 bg-white/10 p-2">
+                      <LanguagesIcon className="h-5 w-5 text-[#00bcd4]" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-white/40">
+                        Languages
+                      </p>
+                      
+                    </div>
+                  </div>
+                  <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-4">
+                    {languages.map((language) => (
+                      <div
+                        key={language.name}
+                        className="flex items-center justify-between rounded-2xl bg-white/5 px-4 py-3 text-xs sm:text-sm text-white/70"
+                      >
+                        <span>{language.name}</span>
+                        <span className="text-white/40">{language.level}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <span className="corner tl" />
+                <span className="corner tr" />
+                <span className="corner bl" />
+                <span className="corner br" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+
+        {/* ===== FOOTER ===== */}
+        <section className="mx-auto max-w-6xl px-4 sm:px-5 py-10">
           <p className="mt-8 sm:mt-10 text-center text-[9px] sm:text-xs uppercase tracking-[0.4em] text-white/40">
-            © {new Date().getFullYear()} Mohamed Omor. Crafted with patience &amp;
-            curiosity.
+            © {new Date().getFullYear()} Mohamed Omor. All rights reserved.
           </p>
         </section>
       </main>

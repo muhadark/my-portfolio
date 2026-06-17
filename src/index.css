@@ -45,9 +45,306 @@
     @apply bg-[#03040D] text-white antialiased;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body { margin: 0; }
 }
 
 /* Hide scrollbars utility */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+
+/* ═══════════════════════════════════════════════════
+   LAUV-STYLE NAVBAR
+   ═══════════════════════════════════════════════════ */
+
+.lauv-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: black;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+@media (min-width: 768px) {
+  .lauv-header {
+    padding: 0.75rem 2rem;
+  }
+}
+
+/* Logo */
+.lauv-logo-link {
+  display: inline-flex;
+}
+.lauv-logo-img {
+  height: 4.5rem;
+  width: 4.5rem;
+  margin: 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+.lauv-logo-img:hover {
+  transform: scale(1.5) rotate(10deg);
+  filter: brightness(1.25);
+}
+@media (min-width: 768px) {
+  .lauv-logo-img {
+    height: 6rem;
+    width: 6rem;
+    margin: 0.5rem 2.5rem;
+  }
+}
+
+/* ── Nav wrapper (desktop) ── */
+.lauv-nav-wrap {
+  display: none;
+  font-weight: 500;
+  height: 70px;
+  position: relative;
+}
+@media (min-width: 768px) {
+  .lauv-nav-wrap {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.lauv-nav {
+  display: flex;
+  position: relative;
+}
+
+.lauv-nav-list {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0 1rem;
+  margin: 0;
+  position: relative;
+  z-index: 3;
+  color: white;
+  text-shadow: 0 1px 1px hsl(205deg 30% 10% / 0.2);
+}
+
+/* ── Each nav item ── */
+.lauv-nav-item {
+  padding: 0.6em 1em;
+  border-radius: 9999px;
+  position: relative;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+  transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 0.5px 1.5px transparent;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+}
+.lauv-nav-item a {
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+}
+.lauv-nav-item:hover {
+  color: white;
+}
+
+/* Pseudo-element for individual pill background */
+.lauv-nav-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: white;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: -1;
+}
+
+.lauv-nav-item.active {
+  color: #000;
+  text-shadow: none;
+}
+.lauv-nav-item.active::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── Shared animated pill (background track) ── */
+.lauv-pill {
+  position: absolute;
+  top: 50%;
+  height: 2.4em;
+  border-radius: 9999px;
+  background: white;
+  transform: translateY(-50%);
+  transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+              width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 1;
+  pointer-events: none;
+  /* blur/contrast trick for liquid morphing */
+  filter: blur(7px) contrast(100) blur(0);
+  mix-blend-mode: lighten;
+}
+
+/* Glow behind the active pill */
+.lauv-pill-glow {
+  position: absolute;
+  top: 50%;
+  height: 2.4em;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 20px 6px rgba(255, 255, 255, 0.06);
+  transform: translateY(-50%);
+  transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+              width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Hamburger ── */
+.lauv-hamburger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+@media (min-width: 768px) {
+  .lauv-hamburger {
+    display: none;
+  }
+}
+
+.lauv-hamburger-line {
+  display: block;
+  width: 1.5rem;
+  height: 2px;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.3s ease-in-out;
+  transform-origin: center;
+}
+.lauv-hamburger-line.open-1 {
+  transform: translateY(7px) rotate(45deg);
+}
+.lauv-hamburger-line.open-2 {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.lauv-hamburger-line.open-3 {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ── Mobile drawer ── */
+.lauv-mobile-drawer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  animation: drawer-slide 0.3s ease;
+}
+@keyframes drawer-slide {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.lauv-mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem 1.25rem;
+}
+
+.lauv-mobile-link {
+  display: block;
+  padding: 0.65rem 1rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+.lauv-mobile-link:hover,
+.lauv-mobile-link.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+.lauv-mobile-link.active {
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+
+/* ═══════════════════════════════════════════════════
+   SOCIAL SIDEBAR (fixed bottom-right)
+   ═══════════════════════════════════════════════════ */
+
+.lauv-social-sidebar {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.75rem;
+  border-radius: 9999px;
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+@media (min-width: 768px) {
+  .lauv-social-sidebar {
+    bottom: 2rem;
+    right: 2rem;
+    padding: 1rem;
+    gap: 1.25rem;
+  }
+}
+
+.lauv-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.lauv-social-link:hover {
+  transform: scale(1.2);
+  color: #06b6d4; /* cyan accent */
+}
+
+.lauv-social-svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+@media (min-width: 640px) {
+  .lauv-social-svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+@media (min-width: 768px) {
+  .lauv-social-svg {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}

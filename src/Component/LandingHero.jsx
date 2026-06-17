@@ -14,7 +14,7 @@ export default function LandingHero() {
   const chipRefs = useRef([]);
   const boxRef = useRef(null);
 
-  // Canvas background
+  // Canvas animated wave grid
   useEffect(() => {
     let raf = 0;
     const init = (canvas) => {
@@ -31,11 +31,15 @@ export default function LandingHero() {
       ctx.scale(DPR, DPR);
 
       let t = 0;
-      const cols = 26;
-      const rows = 10;
+
+      // Total number of wave lines emanating from the origin point
+      const TOTAL_LINES = 22;
+      // Origin point: where all lines converge (left edge, vertically centered)
+      const ORIGIN_X_RATIO = 0;       // start at the very left edge
+      const ORIGIN_Y_RATIO = 0.55;   // 55% from top
 
       const draw = () => {
-        t += 0.008;
+        t += 0.009;
         width = canvas.clientWidth | 0;
         height = canvas.clientHeight | 0;
         if (canvas.width !== width * DPR || canvas.height !== height * DPR) {
@@ -46,34 +50,98 @@ export default function LandingHero() {
         }
         ctx.clearRect(0, 0, width, height);
 
+        // Subtle radial glow near the origin
+        const originX = width * ORIGIN_X_RATIO;
+        const originY = height * ORIGIN_Y_RATIO;
         const g = ctx.createRadialGradient(
-          width * 0.5,
-          height * 0.8,
-          0,
-          width * 0.5,
-          height * 0.8,
-          Math.max(width, height)
+          originX + width * 0.3, originY, 0,
+          originX + width * 0.3, originY, Math.max(width, height) * 0.7
         );
-        g.addColorStop(0, "rgba(175, 164, 255, 0.06)");
+        g.addColorStop(0, "rgba(175, 164, 255, 0.04)");
         g.addColorStop(1, "rgba(0,0,0,0)");
         ctx.fillStyle = g;
         ctx.fillRect(0, 0, width, height);
 
-        ctx.lineWidth = 1;
-        for (let r = 0; r < rows; r++) {
-          const y = 40 + r * ((height - 100) / rows);
+        // === 3D perspective wave surface ===
+        // Draw back-to-front for correct layering
+        // Lines at the "back" (top) are compressed, dim, thin
+        // Lines at the "front" (bottom) are spread, bright, thick
+
+        // Perspective parameters
+        const vanishY = height * 0.42;  // vanishing horizon line
+        const frontY = height * 0.85;   // bottom of the 3D surface
+        const perspectiveDepth = 0.35;  // how much foreshortening (0=flat, 1=extreme)
+
+        for (let l = 0; l < TOTAL_LINES; l++) {
+          // depth: 0 = back (far), 1 = front (near)
+          const depth = l / (TOTAL_LINES - 1);
+
+          // Perspective Y position: lines bunch up near vanishY (back), spread toward frontY
+          const perspY = vanishY + (frontY - vanishY) * Math.pow(depth, 1 + perspectiveDepth);
+
+          // Depth-based properties for 3D feel
+          const depthOpacity = 0.06 + depth * 0.28;       // back=dim, front=bright
+          const depthLineWidth = 0.4 + depth * 1.0;       // back=thin, front=thick
+          const depthWaveAmp = 0.3 + depth * 0.7;         // back=small waves, front=big
+
+          // Subtle color shift: cool blue at back → warm white at front
+          const r = Math.round(180 + depth * 75);
+          const g = Math.round(190 + depth * 65);
+          const b = Math.round(220 + depth * 35);
+
           ctx.beginPath();
-          for (let c = 0; c <= cols; c++) {
-            const x = (c / cols) * width;
-            const amp = 29 + r * 1.2;
-            const k = (c * 0.2 + r * 7.6) * 0.15;
-            const yy = y + Math.sin(k + t * 3) * amp;
-            if (c === 0) ctx.moveTo(x, yy);
-            else ctx.lineTo(x, yy);
+          ctx.lineWidth = depthLineWidth;
+          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${depthOpacity})`;
+
+          // Small per-line offset so each line is slightly unique
+          const phaseOffset = l * 0.15;
+          const ampVariation = 1 + (l % 5 - 2) * 0.06;
+
+          const segments = Math.max(120, Math.floor(width / 4));
+          for (let s = 0; s <= segments; s++) {
+            const progress = s / segments;
+            const x = originX + progress * (width - originX + 40);
+            const normalX = progress;
+
+            // Fan-out from origin with perspective compression for back lines
+            const fanOut = Math.pow(normalX, 1.8);
+            const maxSpread = height * 0.06 * (1 + depth * 3.5); // back lines fan less
+            const ratio = (depth - 0.5) * 2; // -1 to 1
+            const baseOffset = (perspY - originY) * fanOut;
+
+            // === SHARED base wave — irrational freq ratios ===
+            const baseWave1 = Math.sin(normalX * Math.PI * 2 * 1.4142 - t * 2.3) * (42 + Math.sin(t * 0.13) * 8);
+            const baseWave2 = Math.sin(normalX * Math.PI * 2 * 0.7071 - t * 1.732) * (20 + Math.sin(t * 0.09 + 1.7) * 5);
+            const baseWave3 = Math.sin(normalX * Math.PI * 2 * 2.6180 - t * 1.047) * (9 + Math.sin(t * 0.17 + 3.1) * 3);
+            const baseWave4 = Math.sin(normalX * Math.PI * 2 * 0.3927 - t * 0.68) * (12 + Math.sin(t * 0.07) * 4);
+            const sharedWave = (baseWave1 + baseWave2 + baseWave3 + baseWave4) * ampVariation;
+
+            // === Small per-line variation ===
+            const personalRipple =
+              Math.sin(normalX * Math.PI * 2 * (1.8284 + l * 0.271) - t * 1.618 + phaseOffset) * 6 +
+              Math.sin(normalX * Math.PI * 2 * (3.3166 + l * 0.137) - t * 0.867 + phaseOffset * 1.414) * 3;
+
+            // Wave grows with distance from origin, scaled by depth
+            const waveEnvelope = Math.pow(normalX, 1.5) * depthWaveAmp;
+
+            // Taper at right edge
+            const rightTaper = normalX > 0.85 ? 1 - ((normalX - 0.85) / 0.15) : 1;
+
+            const totalWave = (sharedWave + personalRipple) * waveEnvelope * rightTaper;
+            const y = originY + baseOffset + totalWave;
+
+            if (s === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
           }
-          ctx.strokeStyle = "rgba(255, 255, 255, 0.42)";
           ctx.stroke();
         }
+
+        // Glow highlight at origin convergence point
+        const glowGrad = ctx.createRadialGradient(originX, originY, 0, originX, originY, 60);
+        glowGrad.addColorStop(0, "rgba(255, 255, 255, 0.08)");
+        glowGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
+        ctx.fillStyle = glowGrad;
+        ctx.fillRect(originX - 60, originY - 60, 120, 120);
 
         raf = requestAnimationFrame(draw);
       };
@@ -128,7 +196,7 @@ export default function LandingHero() {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0">
         {/* Desktop canvas */}
         <div
-          style={{ width: "100%", height: 600 }}
+          style={{ width: "100%", height: 700 }}
           className="hidden md:block"
         >
           <div className="w-full h-full relative">
@@ -141,8 +209,8 @@ export default function LandingHero() {
 
         {/* Mobile canvas (dimmed) */}
         <div
-          style={{ width: "100%", height: 450 }}
-          className="md:hidden opacity-20"
+          style={{ width: "100%", height: 500 }}
+          className="md:hidden opacity-30"
         >
           <div className="w-full h-full relative">
             <canvas
@@ -213,59 +281,22 @@ export default function LandingHero() {
           </div>
         </div>
 
-        {/* Rotating circular text + logo (desktop / tablet only) */}
-        <div className="w-full items-center mt-8 mb-4 relative h-[220px] md:h-[260px] hidden md:block">
-          <RotatingTextDisk
-            text="SCROLL-DOWN*SCROLL-DOWN*"
-            className="absolute left-10 md:left-24 lg:left-44 bottom-6 md:bottom-10"
-          />
-          <img
-            alt="Lauv Logo"
-            src={muhaLogo}
-            className="m-10 transition-all duration-300 hover:scale-150 hover:rotate-10 hover:brightness-125 absolute left-[80px] md:left-[120px] lg:left-[140px] bottom-[0px] md:bottom-[6px]"
-            width={80}
-            height={80}
-          />
-        </div>
+        {/* Spacer to preserve vertical centering */}
+        <div className="w-full mt-8 mb-4 h-[220px] md:h-[260px] hidden md:block"></div>
+      </div>
 
-        {/* Socials (right rail on large screens, bottom bar on mobile) */}
-        {/* Desktop / large: right side rail */}
-        <div className="absolute right-6 top-1/2 hidden -translate-y-1/2 flex-col items-center gap-4 lg:flex">
-          <SocialIcon
-            href="https://github.com/"
-            label="GitHub"
-            Icon={Github}
-          />
-          <SocialIcon
-            href="https://www.linkedin.com/"
-            label="LinkedIn"
-            Icon={Linkedin}
-          />
-          <SocialIcon
-            href="mailto:simoamour18@gmail.com"
-            label="Email"
-            Icon={Mail}
-          />
-        </div>
-
-        {/* Mobile / tablet: bottom centered bar */}
-        <div className="mt-10 flex lg:hidden gap-4 justify-center">
-          <SocialIcon
-            href="https://github.com/"
-            label="GitHub"
-            Icon={Github}
-          />
-          <SocialIcon
-            href="https://www.linkedin.com/"
-            label="LinkedIn"
-            Icon={Linkedin}
-          />
-          <SocialIcon
-            href="mailto:simoamour18@gmail.com"
-            label="Email"
-            Icon={Mail}
-          />
-        </div>
+      {/* Rotating circular text + logo (absolute bottom-left of viewport) */}
+      <div className="absolute left-4 lg:left-8 bottom-1 lg:bottom-2 z-20 hidden md:flex items-center justify-center w-[120px] h-[120px]">
+        <RotatingTextDisk
+          text="SCROLL-DOWN*SCROLL-DOWN*"
+          className="absolute"
+        />
+        <img
+          alt="Muha Logo"
+          src={muhaLogo}
+          className="absolute z-10 transition-all duration-300 hover:scale-150 hover:rotate-10 hover:brightness-125"
+          style={{ width: "30px", height: "30px", objectFit: "contain" }}
+        />
       </div>
 
       {/* Local styles */}
@@ -323,21 +354,5 @@ function RotatingTextDisk({ text, className = "" }) {
         </span>
       ))}
     </div>
-  );
-}
-
-function SocialIcon({ href, label, Icon }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      className="group"
-      aria-label={label}
-    >
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-3 transition hover:bg-white/10">
-        <Icon className="h-5 w-5 text-white/80 transition group-hover:text-white" />
-      </div>
-    </a>
   );
 }
