@@ -33,8 +33,8 @@ export default function ContactPage() {
               <h2 className="text-xl md:text-2xl font-semibold mb-6">Contact Information</h2>
               <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors w-fit">
                 <Mail className="w-5 h-5 text-blue-400" />
-                <a href="mailto:lumedalauvigne@gmail.com" className="text-sm md:text-base">
-                  lumedalauvigne@gmail.com
+                <a href="mailto:Omormohamed@outlook.com" className="text-sm md:text-base">
+                  Omormohamed@outlook.com
                 </a>
               </div>
             </div>
@@ -59,12 +59,14 @@ export default function ContactPage() {
           {/* Right Column: Form */}
           <div>
             <h2 className="text-xl md:text-2xl font-semibold mb-6">Send a Message</h2>
-            <form className="flex flex-col gap-5">
+            <form action="https://formsubmit.co/Omormohamed@outlook.com" method="POST" className="flex flex-col gap-5">
               <div className="flex flex-col gap-2">
                 <label htmlFor="name" className="text-xs text-gray-400 font-medium">Name</label>
                 <input 
                   type="text" 
                   id="name" 
+                  name="name"
+                  required
                   className="bg-[#111] border border-gray-800 rounded-md p-3 text-sm text-white focus:outline-none focus:border-cyan-500 transition-colors"
                 />
               </div>
@@ -74,6 +76,8 @@ export default function ContactPage() {
                 <input 
                   type="email" 
                   id="email" 
+                  name="email"
+                  required
                   className="bg-[#111] border border-gray-800 rounded-md p-3 text-sm text-white focus:outline-none focus:border-cyan-500 transition-colors"
                 />
               </div>
@@ -83,6 +87,7 @@ export default function ContactPage() {
                 <input 
                   type="text" 
                   id="subject" 
+                  name="_subject"
                   className="bg-[#111] border border-gray-800 rounded-md p-3 text-sm text-white focus:outline-none focus:border-cyan-500 transition-colors"
                 />
               </div>
@@ -91,6 +96,8 @@ export default function ContactPage() {
                 <label htmlFor="message" className="text-xs text-gray-400 font-medium">Message</label>
                 <textarea 
                   id="message" 
+                  name="message"
+                  required
                   rows={4}
                   className="bg-[#111] border border-gray-800 rounded-md p-3 text-sm text-white focus:outline-none focus:border-cyan-500 transition-colors resize-none"
                 />

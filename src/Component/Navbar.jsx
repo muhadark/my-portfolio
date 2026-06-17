@@ -4,8 +4,8 @@ import muhaLogo from "/logo/muha-logo.png";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Projects", href: "/#projects" },
   { label: "Experience", href: "/#experience" },
+  { label: "Projects", href: "/#projects" },
   { label: "Skills", href: "/#skills" },
   { label: "Contact", href: "/contact" },
 ];

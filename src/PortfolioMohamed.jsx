@@ -57,6 +57,8 @@ function stackIconPath(name) {
   const base = import.meta.env.BASE_URL;
 
   const map = {
+    notion: `${base}logo/notion.svg`,
+    html: `${base}logo/html.svg`,
     css: `${base}logo/css.svg`,
     openai: `${base}logo/openai.svg`,
     javascript: `${base}logo/javascript.svg`,
@@ -70,6 +72,7 @@ function stackIconPath(name) {
     "business central": `${base}logo/BusinessCentral.svg`,
     glpi: `${base}logo/glpi.png`,
     eleader: `${base}logo/eleader.svg`,
+    mongodb: `${base}logo/mongodb.png`,
   };
 
   return map[key] || null;
@@ -98,14 +101,44 @@ const projects = [
     image: "logo/silkandsugar.jpg",
   },
   {
-    title: "Operations Support Toolkit",
+    title: "ERP Management & Support",
     role: "Functional Consultant",
     description:
-      "Internal dashboard concept aligning Business Central entities with Eleader field operations for faster resolutions.",
+      "Administered Dynamics 365 Business Central operations, managed GLPI complaint tracking, and generated Power BI performance reports.",
     url: "https://GLPI",
     stack: ["Business Central", "Power BI", "GLPI"],
-    impact: "Accelerated ticket diagnosis and team visibility at Kenz Maroc.",
+    impact: "Streamlined ERP data management and improved IT support visibility at Kenz Maroc.",
     image: "logo/dynamicsnav.jpg",
+  },
+  {
+    title: "Flow Lockin Planner",
+    role: "Full Stack Developer",
+    description:
+      "A comprehensive German language learning planner and dashboard to track progress, daily streaks, vocabulary, and grammar.",
+    url: "https://flow-lockin-planner.vercel.app/",
+    stack: ["react", "css", "html", "mongodb"],
+    impact: "Optimized language acquisition through data visualization and progress tracking.",
+    image: "logo/LOCKIN-PLANNER.png",
+  },
+  {
+    title: "Flow Lockin Challenge",
+    role: "Full Stack Developer",
+    description:
+      "An interactive multiplayer translation challenge game mode designed to test language proficiency in real-time.",
+    url: "https://flow-lockin.vercel.app/",
+    stack: ["react", "css", "html", "mongodb"],
+    impact: "Gamified language learning by introducing a competitive multiplayer aspect.",
+    image: "logo/LOCKIN-CHALLENGES.png",
+  },
+  {
+    title: "SI Project Management (Notion)",
+    role: "Projects management",
+    description:
+      "Engineered a comprehensive IT Project Management workspace in Notion with automated completion tracking, timelines, and priority management.",
+    url: "#",
+    stack: ["Notion"],
+    impact: "Centralized tracking for Kenz Maroc's IT initiatives, providing real-time visibility into delays and milestone achievements.",
+    image: "logo/PROJECT-SI-NOTION.png",
   },
 ];
 
@@ -260,7 +293,7 @@ export default function PortfolioMohamed() {
   });
 
   return (
-    <div className="relative min-h-screen bg-[#03040D] text-white overflow-x-hidden">
+    <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
       {/* blurred background blobs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -left-24 h-[20rem] w-[20rem] rounded-full bg-[#7c6cff]/30 blur-[120px] md:h-[28rem] md:w-[28rem]" />
@@ -274,273 +307,9 @@ export default function PortfolioMohamed() {
       {/* Floating social icons */}
       <SocialSidebar />
 
-      <main className="relative z-10">
+      <main className="relative z-10 pt-[100px] md:pt-[120px]">
         {/* Hero */}
         <LandingHero />
-
-        {/* ===== Skills (DEVELOP / CREATE / CONSULT) ===== */}
-        <section id="skills" className="mx-auto max-w-6xl px-4 sm:px-5 py-16 sm:py-20">
-          <AnimatedSectionTitle text="What I do" />
-
-          <div className="grid gap-10 md:gap-14 md:grid-cols-2">
-            {/* DEVELOP */}
-            <div className="relative">
-              <div className="corner-panel rounded-lg p-5 sm:p-6 md:p-8 bg-transparent">
-                <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wide">
-                  DEVELOP
-                </h3>
-                <p className="mt-3 text-sm sm:text-base text-gray-400 leading-relaxed">
-                  Started creating mobile applications using Flutter, FlutterFlow,
-                  and Firebase and eventually switched to web development using
-                  React and Tailwind.
-                </p>
-
-                <h4 className="mt-5 mb-3 text-xs sm:text-sm font-semibold text-cyan-300">
-                  Skillset &amp; tools
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {["Tailwind", "React", "Javascript", "CSS", "Firebase"].map(
-                    (item) => (
-                      <span
-                        key={item}
-                        className="rounded-full border border-gray-600/80 bg-transparent px-3 py-1 text-[11px] sm:text-xs text-gray-300"
-                      >
-                        {item}
-                      </span>
-                    )
-                  )}
-                </div>
-              </div>
-              <span className="corner tl" />
-              <span className="corner tr" />
-              <span className="corner bl" />
-              <span className="corner br" />
-            </div>
-
-            {/* CREATE */}
-            <div className="relative">
-              <div className="corner-panel rounded-lg p-5 sm:p-6 md:p-8 bg-transparent">
-                <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wide">
-                  CREATE
-                </h3>
-                <p className="mt-3 text-sm sm:text-base text-gray-400 leading-relaxed">
-                  My content creation journey evolved from a side hustle to
-                  serving other creators, achieving an average reach of 15 million
-                  within 90 days.
-                </p>
-
-                <h4 className="mt-5 mb-3 text-xs sm:text-sm font-semibold text-cyan-300">
-                  Skillset &amp; Tools
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {["Figma", "Canva", "Adobe Photoshop", "Notion", "Power BI"].map(
-                    (item) => (
-                      <span
-                        key={item}
-                        className="rounded-full border border-gray-600/80 bg-transparent px-3 py-1 text-[11px] sm:text-xs text-gray-300"
-                      >
-                        {item}
-                      </span>
-                    )
-                  )}
-                </div>
-              </div>
-              <span className="corner tl" />
-              <span className="corner tr" />
-              <span className="corner bl" />
-              <span className="corner br" />
-            </div>
-
-            {/* CONSULT */}
-            <div className="relative md:col-span-2">
-              <div className="corner-panel rounded-lg p-5 sm:p-6 md:p-8 bg-transparent">
-                <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wide">
-                  CONSULT • ERP (Business Central) &amp; GLPI
-                </h3>
-
-                <p className="mt-3 text-sm sm:text-base text-gray-400 leading-relaxed">
-                  As a Consultant Fonctionnel ERP (Dynamics 365 Business Central)
-                  with complaint tracking on the GLPI system, I streamline data
-                  integrity, pricing, and warehouse setups.
-                </p>
-
-                <h4 className="mt-5 mb-3 text-xs sm:text-sm font-semibold text-cyan-300">
-                  Skillset &amp; Tools
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    "Business Central Dynamics NAV 365",
-                    "GLPI",
-                    "Eleader",
-                  ].map((item) => (
-                    <span
-                      key={item}
-                      className="rounded-full border border-gray-600/80 bg-transparent px-3 py-1 text-[11px] sm:text-xs text-gray-300"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <span className="corner tl" />
-              <span className="corner tr" />
-              <span className="corner bl" />
-              <span className="corner br" />
-            </div>
-          </div>
-
-          <style>{`
-            .corner-panel {
-              position: relative;
-              background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
-              background-size: 12px 12px;
-              background-position: -2px -2px;
-              border: 1px solid rgba(255,255,255,0.08);
-            }
-            .corner {
-              position: absolute;
-              width: 16px;
-              height: 16px;
-              border: 2px solid rgba(0,255,255,0.9);
-              filter: drop-shadow(0 0 4px rgba(0,255,255,0.7));
-              border-radius: 3px;
-              pointer-events: none;
-            }
-            .corner.tl { top: -8px; left: -8px; border-right: 0; border-bottom: 0; }
-            .corner.tr { top: -8px; right: -8px; border-left: 0; border-bottom: 0; }
-            .corner.bl { bottom: -8px; left: -8px; border-right: 0; border-top: 0; }
-            .corner.br { bottom: -8px; right: -8px; border-left: 0; border-top: 0; }
-          `}</style>
-        </section>
-
-        {/* ===== PROJECTS ===== */}
-        <section
-          id="projects"
-          className="mx-auto max-w-[1400px] px-4 sm:px-5 py-16 sm:py-20"
-        >
-          <AnimatedSectionTitle text="My Projects" />
-          <div className="mb-8 sm:mb-12 flex justify-center">
-            <a
-              href="https://github.com/"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-3 py-2 sm:px-4 sm:py-2 text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/70 transition hover:text-white"
-            >
-              View code <ExternalLink className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-            </a>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px sm:gap-0 w-full mx-auto mt-6 sm:mt-10">
-            {projects.map((project, i) => {
-              const n = String(i + 1).padStart(2, "0");
-              const role = project.role || "Web Developer";
-              const image = project.image || "/proj/placeholder.png";
-
-              const alignRight = i % 2 === 0;
-              const numberPos = [
-                "top-4 left-4",
-                "bottom-4 left-4",
-                "top-4 right-4",
-                "bottom-4 right-4",
-              ][i % 4];
-
-              return (
-                <div
-                  key={project.title}
-                  className="relative flex flex-col justify-between border border-white/15 bg-black/30 sm:bg-transparent overflow-hidden h-full py-5 sm:py-6 px-4 sm:px-6"
-                >
-                  <div
-                    className={`pointer-events-none absolute ${numberPos} text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white/10`}
-                  >
-                    {n}
-                  </div>
-
-                  <div className="flex flex-col justify-between h-full gap-4 sm:gap-6">
-                    <div
-                      className={`flex flex-col ${
-                        alignRight
-                          ? "text-right items-end order-1"
-                          : "text-left items-start order-2 md:order-2"
-                      } z-10`}
-                    >
-                      <div>
-                        <h3 className="text-base sm:text-lg md:text-xl font-semibold text-white">
-                          {project.title}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-gray-400">
-                          {role}
-                        </p>
-                      </div>
-
-                      <div className="mt-2">
-                        <div className="flex flex-wrap gap-2">
-                          {project.stack?.slice(0, 5).map((tech) => {
-                            const icon = stackIconPath(tech);
-                            if (icon) {
-                              return (
-                                <img
-                                  key={tech}
-                                  alt={`${tech} icon`}
-                                  loading="lazy"
-                                  width="24"
-                                  height="24"
-                                  decoding="async"
-                                  className="inline-block"
-                                  src={icon}
-                                />
-                              );
-                            }
-                            return (
-                              <span
-                                key={tech}
-                                className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-widest text-white/60"
-                              >
-                                {tech}
-                              </span>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div
-                      className={`relative w-full flex-grow rounded-xl overflow-hidden z-10 ${
-                        alignRight ? "order-2" : "order-1 md:order-1"
-                      } transition-transform duration-300 hover:scale-[1.01]`}
-                      style={{ opacity: 0.9 }}
-                    >
-                      {project.url ? (
-                        <a href={project.url} target="_blank" rel="noreferrer">
-                          <img
-                            alt={`${project.title} image`}
-                            loading="lazy"
-                            width="500"
-                            height="500"
-                            decoding="async"
-                            src={image}
-                            className="w-full h-full object-cover"
-                            style={{ color: "transparent" }}
-                          />
-                        </a>
-                      ) : (
-                        <img
-                          alt={`${project.title} image`}
-                          loading="lazy"
-                          width="500"
-                          height="500"
-                          decoding="async"
-                          src={image}
-                          className="w-full h-full object-cover"
-                          style={{ color: "transparent" }}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
 
         {/* ===== EXPERIENCE (timeline) ===== */}
         <section
@@ -565,7 +334,7 @@ export default function PortfolioMohamed() {
             />
             <div className="relative space-y-16 sm:space-y-20">
               {/* ITEM 1 */}
-              <div className="relative grid grid-cols-1 md:grid-cols-2 items-start gap-x-10 md:gap-x-20 gap-y-4 rounded-2xl bg-black/60 md:bg-transparent p-5 sm:p-6 md:p-0 shadow-lg md:shadow-none">
+              <div className="relative grid grid-cols-1 md:grid-cols-2 items-start gap-x-10 md:gap-x-20 gap-y-4 rounded-2xl bg-black md:bg-transparent p-5 sm:p-6 md:p-0 shadow-lg md:shadow-none">
                 <div className="flex flex-col md:items-end md:text-right">
                   <h3 className="text-xl md:text-2xl font-bold text-gray-100">
                     Traineeship
@@ -594,7 +363,7 @@ export default function PortfolioMohamed() {
               </div>
 
               {/* ITEM 3 */}
-              <div className="relative grid grid-cols-1 md:grid-cols-2 items-start gap-x-10 md:gap-x-20 gap-y-4 rounded-2xl bg-black/60 md:bg-transparent p-5 sm:p-6 md:p-0 shadow-lg md:shadow-none">
+              <div className="relative grid grid-cols-1 md:grid-cols-2 items-start gap-x-10 md:gap-x-20 gap-y-4 rounded-2xl bg-black md:bg-transparent p-5 sm:p-6 md:p-0 shadow-lg md:shadow-none">
                 <div className="flex flex-col md:items-end md:text-right">
                   <h3 className="text-xl md:text-2xl font-bold text-gray-100">
                     IT Equipment Inventory (Contract)
@@ -617,7 +386,7 @@ export default function PortfolioMohamed() {
               </div>
 
               {/* ITEM 4 */}
-              <div className="relative grid grid-cols-1 md:grid-cols-2 items-start gap-x-10 md:gap-x-20 gap-y-4 rounded-2xl bg-black/60 md:bg-transparent p-5 sm:p-6 md:p-0 shadow-lg md:shadow-none">
+              <div className="relative grid grid-cols-1 md:grid-cols-2 items-start gap-x-10 md:gap-x-20 gap-y-4 rounded-2xl bg-black md:bg-transparent p-5 sm:p-6 md:p-0 shadow-lg md:shadow-none">
                 <div className="flex flex-col md:items-end md:text-right">
                   <h3 className="text-xl md:text-2xl font-bold text-gray-100">
                     Technicien Support Applicatif et Systèmes
@@ -740,6 +509,261 @@ export default function PortfolioMohamed() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* ===== PROJECTS ===== */}
+        <section
+          id="projects"
+          className="mx-auto max-w-[1400px] px-4 sm:px-5 py-16 sm:py-20"
+        >
+          <AnimatedSectionTitle text="My Projects" />
+          <div className="mb-8 sm:mb-12 flex justify-center">
+            <a
+              href="https://github.com/"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-3 py-2 sm:px-4 sm:py-2 text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/70 transition hover:text-white"
+            >
+              View code <ExternalLink className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px sm:gap-0 w-full mx-auto mt-6 sm:mt-10">
+            {projects.map((project, i) => {
+              const n = String(i + 1).padStart(2, "0");
+              const role = project.role || "Web Developer";
+              const image = project.image || "/proj/placeholder.png";
+
+              const alignRight = i % 2 === 0;
+              const numberPos = alignRight ? "top-4 left-4" : "bottom-4 right-4";
+
+              return (
+                <div
+                  key={project.title}
+                  className="relative flex flex-col justify-between border border-white/15 bg-transparent overflow-hidden h-full py-5 sm:py-6 px-4 sm:px-6"
+                >
+                  <div
+                    className={`pointer-events-none absolute ${numberPos} text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white/10`}
+                  >
+                    {n}
+                  </div>
+
+                  <div className="flex flex-col justify-between h-full gap-4 sm:gap-6">
+                    <div
+                      className={`flex flex-col ${
+                        alignRight
+                          ? "text-right items-end order-1"
+                          : "text-left items-start order-2 md:order-2"
+                      } z-10`}
+                    >
+                      <div>
+                        <h3 className="text-base sm:text-lg md:text-xl font-semibold text-white">
+                          {project.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-gray-400">
+                          {role}
+                        </p>
+                      </div>
+
+                      <div className="mt-2">
+                        <div className="flex flex-wrap gap-2">
+                          {project.stack?.slice(0, 5).map((tech) => {
+                            const icon = stackIconPath(tech);
+                            if (icon) {
+                              return (
+                                <img
+                                  key={tech}
+                                  alt={`${tech} icon`}
+                                  loading="lazy"
+                                  width="24"
+                                  height="24"
+                                  decoding="async"
+                                  className="inline-block"
+                                  src={icon}
+                                />
+                              );
+                            }
+                            return (
+                              <span
+                                key={tech}
+                                className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-widest text-white/60"
+                              >
+                                {tech}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      className={`relative w-full flex-grow rounded-xl overflow-hidden z-10 ${
+                        alignRight ? "order-2" : "order-1 md:order-1"
+                      } transition-transform duration-300 hover:scale-[1.01]`}
+                      style={{ opacity: 0.9 }}
+                    >
+                      {project.url ? (
+                        <a href={project.url} target="_blank" rel="noreferrer">
+                          <img
+                            alt={`${project.title} image`}
+                            loading="lazy"
+                            width="500"
+                            height="500"
+                            decoding="async"
+                            src={image}
+                            className="w-full h-full object-cover"
+                            style={{ color: "transparent" }}
+                          />
+                        </a>
+                      ) : (
+                        <img
+                          alt={`${project.title} image`}
+                          loading="lazy"
+                          width="500"
+                          height="500"
+                          decoding="async"
+                          src={image}
+                          className="w-full h-full object-cover"
+                          style={{ color: "transparent" }}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ===== Skills (DEVELOP / CREATE / CONSULT) ===== */}
+        <section id="skills" className="mx-auto max-w-6xl px-4 sm:px-5 py-16 sm:py-20">
+          <AnimatedSectionTitle text="What I do" />
+
+          <div className="grid gap-10 md:gap-14 md:grid-cols-2">
+            {/* DEVELOP */}
+            <div className="relative">
+              <div className="corner-panel rounded-lg p-5 sm:p-6 md:p-8 bg-transparent">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wide">
+                  DEVELOP
+                </h3>
+                <p className="mt-3 text-sm sm:text-base text-gray-400 leading-relaxed">
+                  Developed full-stack web applications, e-commerce storefronts, and interactive dashboards using modern web technologies, while integrating AI features.
+                </p>
+
+                <h4 className="mt-5 mb-3 text-xs sm:text-sm font-semibold text-cyan-300">
+                  Skillset &amp; tools
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {["React", "Javascript", "HTML", "CSS", "Firebase", "MongoDB", "Supabase", "MySQL", "OpenAI"].map(
+                    (item) => (
+                      <span
+                        key={item}
+                        className="rounded-full border border-gray-600/80 bg-transparent px-3 py-1 text-[11px] sm:text-xs text-gray-300"
+                      >
+                        {item}
+                      </span>
+                    )
+                  )}
+                </div>
+              </div>
+              <span className="corner tl" />
+              <span className="corner tr" />
+              <span className="corner bl" />
+              <span className="corner br" />
+            </div>
+
+            {/* CREATE */}
+            <div className="relative">
+              <div className="corner-panel rounded-lg p-5 sm:p-6 md:p-8 bg-transparent">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wide">
+                  CREATE
+                </h3>
+                <p className="mt-3 text-sm sm:text-base text-gray-400 leading-relaxed">
+                  I design user interfaces using Figma and edit graphics with Photoshop and Canva. Beyond design, I build project management workspaces in Notion to track progress, and I've developed dynamic Power BI dashboards for GLPI ticket analysis by directly querying MySQL databases via ODBC.
+                </p>
+
+                <h4 className="mt-5 mb-3 text-xs sm:text-sm font-semibold text-cyan-300">
+                  Skillset &amp; Tools
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {["Figma", "Canva", "Adobe Photoshop", "Notion", "Power BI", "MySQL"].map(
+                    (item) => (
+                      <span
+                        key={item}
+                        className="rounded-full border border-gray-600/80 bg-transparent px-3 py-1 text-[11px] sm:text-xs text-gray-300"
+                      >
+                        {item}
+                      </span>
+                    )
+                  )}
+                </div>
+              </div>
+              <span className="corner tl" />
+              <span className="corner tr" />
+              <span className="corner bl" />
+              <span className="corner br" />
+            </div>
+
+            {/* CONSULT */}
+            <div className="relative md:col-span-2">
+              <div className="corner-panel rounded-lg p-5 sm:p-6 md:p-8 bg-transparent">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wide">
+                  CONSULT • ERP (Business Central) &amp; GLPI
+                </h3>
+
+                <p className="mt-3 text-sm sm:text-base text-gray-400 leading-relaxed">
+                  As a Consultant Fonctionnel ERP (Dynamics 365 Business Central)
+                  with complaint tracking on the GLPI system, I streamline data
+                  integrity, pricing, and warehouse setups.
+                </p>
+
+                <h4 className="mt-5 mb-3 text-xs sm:text-sm font-semibold text-cyan-300">
+                  Skillset &amp; Tools
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    "Business Central Dynamics NAV 365",
+                    "GLPI",
+                    "Eleader",
+                  ].map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border border-gray-600/80 bg-transparent px-3 py-1 text-[11px] sm:text-xs text-gray-300"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <span className="corner tl" />
+              <span className="corner tr" />
+              <span className="corner bl" />
+              <span className="corner br" />
+            </div>
+          </div>
+
+          <style>{`
+            .corner-panel {
+              position: relative;
+              background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+              background-size: 12px 12px;
+              background-position: -2px -2px;
+              border: 1px solid rgba(255,255,255,0.08);
+            }
+            .corner {
+              position: absolute;
+              width: 16px;
+              height: 16px;
+              border: 2px solid rgba(0,255,255,0.9);
+              filter: drop-shadow(0 0 4px rgba(0,255,255,0.7));
+              border-radius: 3px;
+              pointer-events: none;
+            }
+            .corner.tl { top: -8px; left: -8px; border-right: 0; border-bottom: 0; }
+            .corner.tr { top: -8px; right: -8px; border-left: 0; border-bottom: 0; }
+            .corner.bl { bottom: -8px; left: -8px; border-right: 0; border-top: 0; }
+            .corner.br { bottom: -8px; right: -8px; border-left: 0; border-top: 0; }
+          `}</style>
         </section>
 
         {/* ===== EDUCATION & LANGUAGES ===== */}
