@@ -296,7 +296,7 @@ export default function PortfolioMohamed() {
     <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
       {/* blurred background blobs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -left-24 h-[20rem] w-[20rem] rounded-full bg-[#7c6cff]/30 blur-[120px] md:h-[28rem] md:w-[28rem]" />
+        <div className="absolute -top-40 -left-24 h-[20rem] w-[20rem] rounded-full bg-transparent blur-[120px] md:h-[28rem] md:w-[28rem]" />
         <div className="absolute top-1/3 -right-10 h-[18rem] w-[18rem] rounded-full bg-[#00bcd4]/20 blur-[140px] md:h-[26rem] md:w-[26rem]" />
         <div className="absolute bottom-0 left-1/2 h-[18rem] w-[18rem] -translate-x-1/2 rounded-full bg-[#ffb347]/20 blur-[160px] md:h-[22rem] md:w-[22rem]" />
       </div>

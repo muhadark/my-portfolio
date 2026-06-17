@@ -47,7 +47,7 @@ export default function LandingHero() {
   return (
     <main className="relative flex-grow flex flex-col items-center justify-center bg-black text-white overflow-hidden">
       {/* Threads Background */}
-      <div className="absolute inset-x-0 bottom-0 z-0 h-[500px] md:h-[700px]">
+      <div className="absolute inset-0 z-0">
         <Threads amplitude={1} distance={0} enableMouseInteraction={true} />
       </div>
 
